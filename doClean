@@ -1,0 +1,29 @@
+# c 2016 BBarriage
+# c 2016 Fordham University
+# Runs pointcloud filtering on dataDump files contained within a individual SQUARES of an HSVD GRID and stores new clean dataDump files in a clean version of the original GRID directory
+#FRCV LAB FORDHAM UNIVERSITY
+#Ben Barriage
+#October 2016
+#
+echo "Attempting to clean all the data"
+#
+mkdir $1_clean 
+for i in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+do	 
+     mkdir $1_clean/SQUARE$i
+done
+
+for i in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+do
+    ./filter $1/SQUARE$i/dataDump_144_0.txt $1_clean/SQUARE$i/dataDump_144_0.txt
+    ./filter $1/SQUARE$i/dataDump_0_0.txt $1_clean/SQUARE$i/dataDump_0_0.txt
+    ./filter $1/SQUARE$i/dataDump_-72_0.txt $1_clean/SQUARE$i/dataDump_-72_0.txt
+    ./filter $1/SQUARE$i/dataDump_72_0.txt $1_clean/SQUARE$i/dataDump_72_0.txt
+    ./filter $1/SQUARE$i/dataDump_108_0.txt $1_clean/SQUARE$i/dataDump_108_0.txt
+    ./filter $1/SQUARE$i/dataDump_-108_0.txt $1_clean/SQUARE$i/dataDump_-108_0.txt
+    ./filter $1/SQUARE$i/dataDump_-144_0.txt $1_clean/SQUARE$i/dataDump_-144_0.txt
+    ./filter $1/SQUARE$i/dataDump_36_0.txt $1_clean/SQUARE$i/dataDump_36_0.txt
+    ./filter $1/SQUARE$i/dataDump_-36_0.txt $1_clean/SQUARE$i/dataDump_-36_0.txt
+    ./filter $1/SQUARE$i/dataDump_-144_-36.txt $1_clean/SQUARE$i/dataDump_-144_-36.txt
+done
+
