@@ -48,7 +48,7 @@ def combine(job):
         f.write(str(sum(data[k])/30))#writes average distance across the number of files to the output file 
         f.write("\n")
         print sum(data[k])/30
-#runs through each of the 4 standard scriptsused in HSVD testing 
+#runs through each of the 4 standard scripts used in HSVD testing 
 combine("resTrows")
 combine("resTDiag")
 combine("resTallSqAng")
