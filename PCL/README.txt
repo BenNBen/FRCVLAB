@@ -1,4 +1,4 @@
-Filter.cpp: used to covnert HSVD dataDump files from a .txt format to a pointcloud data structure, which is then cleaned with statistical filtering. The resulting cloud is then written back to a file in the original format.
+Filter.cpp: used to convert HSVD dataDump files from a .txt format to a pointcloud data structure, which is then cleaned with statistical filtering. The resulting cloud is then written back to a file in the original format.
 
 This function takes two arguments, the first being the input file and the second being the output file.
 
