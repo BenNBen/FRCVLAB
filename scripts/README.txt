@@ -1,12 +1,13 @@
 outValues.py: initial python script used to average individual lines across HSVDout*.csv files
-outValuesRevised.py: revised python script, now averages distance, angle offset, and success rate for individual lines across HSVDout*.csv files
+outValuesRevised.py: revised python script, now averages distance, angle offset, and success rate for individual lines across HSVDout*.csv files. Ensure directories have been made corresponding to each type of job.
+For example, resTrows5 for trials run with resTrows script and 5 source images. This is the ideal location of HSVDout*.csv files 
 
 To Run outValues scripts: Ensure HSVDout*.csv files exist in order to grab their information.
 
 outAverage.py: initial python script used to find total average of job files created by outValues.py
 outAverageRevised.py: revised python script, now works to average distance, angle offset, and success rate
 
-To Run outAverage scripts: Ensure the corresponding outValue script has been executed in order to obtain files necessary for outAverage script. 
+To Run outAverage scripts: Ensure the corresponding outValue script has been executed in order to obtain files necessary for outAverage script and be careful to use same input for outAverage as for outValues.
 
 doClean: script used in conjunction with filter pointcloud program found within PCL directory to clean dataDump files for HSVD testing
 

@@ -59,6 +59,6 @@ def combine(job):
         
 #runs through each of the 4 standard scripts used in HSVD testing 
 combine("resTrows")
-#combine("resTDiag")
-#combine("resTallSqAng")
-#combine("resTDDiag")
+combine("resTDiag")
+combine("resTallSqAng")
+combine("resTDDiag")
