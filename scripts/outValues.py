@@ -11,6 +11,7 @@ import sys
 
 grid = input("Enter the grid number: ")
 status = input("Enter whether your data is clean or unclean: ")
+cores = input("How many cores were used for testing? ") #cores=number of HSVD out files
 def combine(job):
     if (job=="resTrows"):
         num=21 #standard number of lines in resTrows script
@@ -21,7 +22,7 @@ def combine(job):
     if(job=="resTallSqAng"):
         num=65 #standard number of lines in resTallSqAng script
     f = file("GRID"+grid+status+job+".txt","wr+")
-    data = [[0 for x in xrange (10)] for x in xrange(num)]
+    data = [[0 for x in xrange (cores)] for x in xrange(num)]
     i = 0
     for name in glob.glob(job+grid+'/HSVDout*.csv'):
         with open(name, 'rb') as csvfile:        
@@ -32,9 +33,9 @@ def combine(job):
                 data[filereader.line_num][i]=j 
             i = i+1
     for k in range(1,num):
-        f.write(str(sum(data[k])/10)) #writes line averages to a file
+        f.write(str(sum(data[k])/cores)) #writes line averages to a file
         f.write("\n")
-        print sum(data[k])/10
+        print sum(data[k])/cores
 #runs through each of the 4 standard scripts used in HSVD testing
 combine("resTrows")
 combine("resTDiag")
