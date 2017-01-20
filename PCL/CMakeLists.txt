@@ -6,6 +6,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 project(filter)
+project(slice)
 
 find_package(PCL 1.2 REQUIRED)
 
@@ -17,5 +18,7 @@ add_definitions(${PCL_DEFINITIONS})
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 
 add_executable(filter filter.cpp)
+add_executable(slice slice.cpp)
 
 target_link_libraries (filter ${PCL_LIBRARIES})
+target_link_libraries( slice ${PCL_LIBRARIES})
