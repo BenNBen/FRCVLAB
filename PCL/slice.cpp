@@ -95,10 +95,21 @@ void writePCDfile(FILE *file, pcl::PointCloud<PointConv>::Ptr cloud){
   int k = 0;
   while(k<cloud->size()){//traverses the individual points of the cloud
     item = cloud->points[k];
-    fprintf(out,"%f, %f, %f, %d\n", item.x, item.y, item.z, item.rgba); 
+    fprintf(out,"%lf, %lf, %lf, %d\n", item.x, item.y, item.z, item.rgba); 
     //writes a single point's content to a line of the file
     k++;
   }
+}
+
+void doHeader(FILE *h, int nP){
+  fprintf(h, "# .PCD v.7 - Point Cloud Data file format\n");
+  fprintf(h, "FIELDS x y z rgba\n");
+  fprintf(h, "SIZE 4 4 4 4\n");
+  fprintf(h, "TYPE F F F U\n");
+  fprintf(h, "WIDTH %d\n",nP);
+  fprintf(h, "HEIGHT 1\n");
+  fprintf(h, "Points %d\n", nP);
+  fprintf(h, "DATA ascii\n");
 }
 
 int
@@ -123,7 +134,10 @@ main (int argc, char** argv)
   std::cerr<<"Cloud after filtering: "<<std::endl;
   std::cerr<<*cloud_filt <<std::endl;
 
+  long numPoints = cloud_filt->size();
+
   out =fopen(argv[2],"w");
+  doHeader(out, numPoints);
   writePCDfile(out,cloud_filt);
   fclose(out);
   return (0);
