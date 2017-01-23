@@ -53,7 +53,8 @@ int main (int argc, char **argv){
     }
   
   
-  panorama =cvCreateImage (cvSize ( IMG_HEIGHT*pano.size(),IMG_WIDTH*pano.size()), IPL_DEPTH_8U, 3);
+  //panorama =cvCreateImage (cvSize ( IMG_HEIGHT*pano.size(),IMG_WIDTH*pano.size()), IPL_DEPTH_8U, 3);
+  panorama =cvCreateImage (cvSize ( 4000,4000), IPL_DEPTH_8U, 3);
   printf("Pano height is: %d\n", panorama->height);
   printf("Pano width is: %d\n", panorama->width);
   //  panorama = concatenateImages (panorama, pano);
@@ -246,39 +247,41 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
   std::vector <IplImage *>::reverse_iterator imageRev;
   int count = 0;
   //CvScalar p;
-
+  
   uchar *newData = (uchar*)panorama->imageData;
   int xOffset = panorama->width/2;
   int yOffset = panorama->height/2;
+  int goalStep = panorama->widthStep;
+  int goalChannels = panorama->nChannels;
   
-  for (imageRev = images.rbegin (); imageRev != images.rend (); imageRev++){
-    IplImage *img = *imageRev;
+  //  for (imageRev = images.rbegin (); imageRev != images.rend (); imageRev++){
+  for(int i =0;i<images.size();i++){
+    IplImage *img = images.at(1);
+    //IplImage *img = *imageRev;
     int height = img->height;
     int width = img->width;
     int nChannels = img->nChannels;
     int step = img->widthStep;
     uchar * data  = (uchar*) img->imageData;
-
     
     
-    for(int i=1;i<height;i++){  
-      for(int j=1;j<width;j++)  
+    printf("Count is %d\n",count);
+    for(int i=0;i<height;i++){  
+      for(int j=0;j<width;j++)
 	if(data[i*step+j*nChannels+0]!=0 || data[i*step+j*nChannels+1]!=0 || data[i*step+j*nChannels+2]!=0){
 	  double theta = 36*count;
 	  double PI = 3.14159265;
-	  int x = cos(theta)-(i*sin(theta));
-	  int y = sin(theta)-(j*cos(theta));
+	  int x = (j*cos(theta*PI/180.0))-((i+100)*sin(theta*PI/180.0));
+	  int y = ((i+100)*sin(theta*PI/180.0))+(j*cos(theta*PI/180.0));
 	  x = x+xOffset;
 	  y = y+yOffset;
-	  printf("The x value is %d \n", x);
-	  printf("The y value is %d \n", y);
-	  newData[y*step+x*nChannels+0]=data[i*step+j*nChannels+0];
-	  newData[y*step+x*nChannels+1]=data[i*step+j*nChannels+1];
-	  newData[y*step+x*nChannels+2]=data[i*step+j*nChannels+2];
+	  newData[y*goalStep+x*goalChannels+0]=data[i*step+j*nChannels+0];
+	  newData[y*goalStep+x*goalChannels+1]=data[i*step+j*nChannels+1];
+	  newData[y*goalStep+x*goalChannels+2]=data[i*step+j*nChannels+2];
 	}
     }
     count++;
   }
-  return panorama;
+    return panorama;
   
 }
