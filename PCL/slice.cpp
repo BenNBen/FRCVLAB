@@ -3,7 +3,7 @@
  * c 2017 Fordham University
  * Author: Ben Barriage
  * Date: 1/23/17
- * Purpose: Take in existing data file and generate a cleaned pointcloud representation of the data, make a vertical slice of the data, and save it as a pointcloud file
+ * Purpose: Take in existing data file and generate a cleaned pointcloud representation of the data, make a vertical slice of the data, and save it as a pointcloud file.
  */
 
 #define PCL_NO_PRECOMPILE
