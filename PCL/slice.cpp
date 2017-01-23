@@ -2,7 +2,7 @@
  * c 2017 BBarriage
  * c 2017 Fordham University
  * Author: Ben Barriage
- * Date: 1/20/16
+ * Date: 1/23/17
  * Purpose: Take in existing data file and generate a cleaned pointcloud representation of the data, make a vertical slice of the data, and save it as a pointcloud file
  */
 
@@ -79,7 +79,7 @@ pcl::PointCloud<PointConv> doFilter(pcl::PointCloud<PointConv>::Ptr cloud){
   
   pass.setInputCloud (cloud);
   pass.setFilterFieldName("z");
-  pass.setFilterLimits(0.0,1.0);
+  pass.setFilterLimits(0.0,1000.0);
   pass.filter (*cloud_f);
   return *cloud_f;
 }
@@ -95,7 +95,7 @@ void writePCDfile(FILE *file, pcl::PointCloud<PointConv>::Ptr cloud){
   int k = 0;
   while(k<cloud->size()){//traverses the individual points of the cloud
     item = cloud->points[k];
-    fprintf(out,"%lf, %lf, %lf, %d\n", item.x, item.y, item.z, item.rgba); 
+    fprintf(out,"%lf %lf %lf %d\n", item.x, item.y, item.z, rgba(item.r,item.g, item.b)); 
     //writes a single point's content to a line of the file
     k++;
   }
@@ -108,7 +108,7 @@ void doHeader(FILE *h, int nP){
   fprintf(h, "TYPE F F F U\n");
   fprintf(h, "WIDTH %d\n",nP);
   fprintf(h, "HEIGHT 1\n");
-  fprintf(h, "Points %d\n", nP);
+  fprintf(h, "POINTS %d\n", nP);
   fprintf(h, "DATA ascii\n");
 }
 
@@ -138,7 +138,7 @@ main (int argc, char** argv)
 
   out =fopen(argv[2],"w");
   doHeader(out, numPoints);
-  writePCDfile(out,cloud_filt);
+  writePCDfile(out, cloud_filt);
   fclose(out);
   return (0);
 }
