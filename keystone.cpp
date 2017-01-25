@@ -48,6 +48,7 @@ int main (int argc, char **argv){
       image2 = emptyImage(image1);
       image3 = copyImage(image4, image2);
       cvSaveImage("image3.pgm", image3);
+      cvFlip (image3, NULL, 0);
       pano.push_back (image3);
       printf ("PUSHED\n");
     }
@@ -246,7 +247,6 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
 
   std::vector <IplImage *>::reverse_iterator imageRev;
   int count = 0;
-  //CvScalar p;
   
   uchar *newData = (uchar*)panorama->imageData;
   int xOffset = panorama->width/2;
@@ -254,10 +254,8 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
   int goalStep = panorama->widthStep;
   int goalChannels = panorama->nChannels;
   
-  //  for (imageRev = images.rbegin (); imageRev != images.rend (); imageRev++){
   for(int i =0;i<images.size();i++){
-    IplImage *img = images.at(1);
-    //IplImage *img = *imageRev;
+    IplImage *img = images.at(i);
     int height = img->height;
     int width = img->width;
     int nChannels = img->nChannels;
@@ -271,8 +269,8 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
 	if(data[i*step+j*nChannels+0]!=0 || data[i*step+j*nChannels+1]!=0 || data[i*step+j*nChannels+2]!=0){
 	  double theta = 36*count;
 	  double PI = 3.14159265;
-	  int x = (j*cos(theta*PI/180.0))-((i+100)*sin(theta*PI/180.0));
-	  int y = ((i+100)*sin(theta*PI/180.0))+(j*cos(theta*PI/180.0));
+	  int x = (j*cos(theta*PI/180.0))-((i+50)*sin(theta*PI/180.0));
+	  int y = ((i+50)*sin(theta*PI/180.0))+(j*cos(theta*PI/180.0));
 	  x = x+xOffset;
 	  y = y+yOffset;
 	  newData[y*goalStep+x*goalChannels+0]=data[i*step+j*nChannels+0];
