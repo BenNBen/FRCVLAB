@@ -1,4 +1,4 @@
- /*
+/*
  * c 2017 BBarriage
  * c 2017 Fordham University
  *  Author: Ben Barriage
@@ -55,7 +55,7 @@ int main (int argc, char **argv){
   
   
   //panorama =cvCreateImage (cvSize ( IMG_HEIGHT*pano.size(),IMG_WIDTH*pano.size()), IPL_DEPTH_8U, 3);
-  panorama =cvCreateImage (cvSize ( 4000,4000), IPL_DEPTH_8U, 3);
+  panorama =cvCreateImage (cvSize ( 3000,3000), IPL_DEPTH_8U, 3);
   printf("Pano height is: %d\n", panorama->height);
   printf("Pano width is: %d\n", panorama->width);
   //  panorama = concatenateImages (panorama, pano);
@@ -269,15 +269,21 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
 	if(data[i*step+j*nChannels+0]!=0 || data[i*step+j*nChannels+1]!=0 || data[i*step+j*nChannels+2]!=0){
 	  double theta = 36*count;
 	  double PI = 3.14159265;
-	  int x = (j*cos(theta*PI/180.0))-((i+50)*sin(theta*PI/180.0));
-	  int y = ((i+50)*sin(theta*PI/180.0))+(j*cos(theta*PI/180.0));
-	  x = x+xOffset;
-	  y = y+yOffset;
+	  int yBlank = i+10;
+	  int x = j;
+	  int y = i;
+	  x = (j*cos(theta*PI/180.0))-(yBlank*sin(theta*PI/180.0));
+	  y = (j*sin(theta*PI/180.0))+(yBlank*cos(theta*PI/180.0));
+	  x = x + xOffset;
+	  y = y + yOffset;
 	  newData[y*goalStep+x*goalChannels+0]=data[i*step+j*nChannels+0];
 	  newData[y*goalStep+x*goalChannels+1]=data[i*step+j*nChannels+1];
 	  newData[y*goalStep+x*goalChannels+2]=data[i*step+j*nChannels+2];
 	}
     }
+    char output[100];
+    sprintf(output, "output%d.pgm", count);
+    cvSaveImage(output,panorama);
     count++;
   }
     return panorama;
