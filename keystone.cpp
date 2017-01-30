@@ -34,7 +34,7 @@ int main (int argc, char **argv){
   char *fileName = NULL;
   
   
-  for (int i = 1; i < argc; i++)
+  for (int i = 1; i < argc-1; i++)
     {
       char *fileName = argv[i];
       image1 = cvLoadImage (fileName);
@@ -49,11 +49,13 @@ int main (int argc, char **argv){
       printf ("PUSHED\n");
     }
   printf("Generating decagonal image\n");
-  
+
+  char *outputFile = argv[11];
+  printf("output file is: %s\n", outputFile);
   //4000 chosen to ensure enough space for data while still large in scale
   panorama =cvCreateImage (cvSize ( 4000,4000), IPL_DEPTH_8U, 3);
   panorama = decagonImage(panorama, pano);
-  cvSaveImage ("keystone.pgm", panorama);
+  cvSaveImage(outputFile, panorama);
   printf ("PANORAMA SAVED!\n");
 }
 
