@@ -2,8 +2,8 @@
  * c 2017 BBarriage
  * c 2017 Fordham University
  *  Author: Ben Barriage
- *  Date: 1/15/16
- *  Purpose: Flip, Concatenate, and Change Polar Coordinate Images in order to generate HSVD graphics
+ *  Date: 1/30/16
+ *  Purpose: Flip images, compress square images into trapezoidal shape, and concatenate into a decagonal ring of images
 */
 #include <cv.h>
 #include <highgui.h>
@@ -15,8 +15,6 @@
 #define IMG_HEIGHT 768
 
 IplImage *image1, *image2, *image3, *image4;
-
-IplImage *concatenateImages (IplImage * panorama, std::vector < IplImage * >images);
 
 IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images);
 
@@ -44,53 +42,19 @@ int main (int argc, char **argv){
       printf("PERFORMING WARP\n");
       image1 = trapezoidImage(image1);
       image4 = trapezoidImage(image4);
-      cvSaveImage("image1.pgm",image1);
       image2 = emptyImage(image1);
       image3 = copyImage(image4, image2);
-      cvSaveImage("image3.pgm", image3);
       cvFlip (image3, NULL, 0);
       pano.push_back (image3);
       printf ("PUSHED\n");
     }
+  printf("Generating decagonal image\n");
   
-  
-  //panorama =cvCreateImage (cvSize ( IMG_HEIGHT*pano.size(),IMG_WIDTH*pano.size()), IPL_DEPTH_8U, 3);
-  panorama =cvCreateImage (cvSize ( 3000,3000), IPL_DEPTH_8U, 3);
-  printf("Pano height is: %d\n", panorama->height);
-  printf("Pano width is: %d\n", panorama->width);
-  //  panorama = concatenateImages (panorama, pano);
+  //4000 chosen to ensure enough space for data while still large in scale
+  panorama =cvCreateImage (cvSize ( 4000,4000), IPL_DEPTH_8U, 3);
   panorama = decagonImage(panorama, pano);
-  cvSaveImage ("trapezoid.pgm", panorama);
-  
-  
-  //  test = panorama;
-  //cvSaveImage ("example.pgm", test);
+  cvSaveImage ("keystone.pgm", panorama);
   printf ("PANORAMA SAVED!\n");
-}
-
-
-/*
-  @Purpose: Concatenate images from a vector of images into one single image
-  @param panorama: the IplImage which will contain the concatenated vector of images
-  @param images: the vector of images which will be concatenated into the single panoramic image
-  @return: an IplImage which has been created from a vector of images into a single panorama 
- */
-IplImage * concatenateImages (IplImage * panorama, std::vector < IplImage * >images){
-  std::vector < IplImage * >::reverse_iterator imageRev; 
-  int count = 0;
-  CvScalar p;
-  
-  for (imageRev = images.rbegin (); imageRev != images.rend (); imageRev++){
-    IplImage *img = *imageRev;
-    for (int u = 1; u < img->width; u++)
-      for (int v = 1; v < img->height; v++)
-	{
-	  p = cvGet2D (img, v, u);
-	  cvSet2D (panorama, v, u + (count * IMG_WIDTH), p);
-	}
-    count++;
-  }
-  return panorama;
 }
 
 /*
@@ -242,8 +206,6 @@ IplImage* emptyImage(IplImage * image){
 }
 
 IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
-  printf("The width of the decagon would be %d \n",panorama->width);
-  printf("The height of the decagon would be %d \n", panorama->height);
 
   std::vector <IplImage *>::reverse_iterator imageRev;
   int count = 0;
@@ -262,28 +224,22 @@ IplImage *decagonImage(IplImage* panorama, std::vector<IplImage*>images){
     int step = img->widthStep;
     uchar * data  = (uchar*) img->imageData;
     
-    
-    printf("Count is %d\n",count);
     for(int i=0;i<height;i++){  
       for(int j=0;j<width;j++)
-	if(data[i*step+j*nChannels+0]!=0 || data[i*step+j*nChannels+1]!=0 || data[i*step+j*nChannels+2]!=0){
+	if(data[i*step+j*nChannels+0]!=0 || data[i*step+j*nChannels+1]!=0 || data[i*step+j*nChannels+2]!=0){ //ensures only useful data is copied
 	  double theta = 36*count;
 	  double PI = 3.14159265;
-	  int yBlank = i+10;
-	  int x = j;
-	  int y = i;
-	  x = (j*cos(theta*PI/180.0))-(yBlank*sin(theta*PI/180.0));
-	  y = (j*sin(theta*PI/180.0))+(yBlank*cos(theta*PI/180.0));
-	  x = x + xOffset;
-	  y = y + yOffset;
+	  int yBlank = i+800; //creates central empty space in image
+	  int xBlank =j-img->width/2; //reverts image rotation caused by yBlank
+	  int x = (xBlank*cos(theta*PI/180.0))-(yBlank*sin(theta*PI/180.0));
+	  int y = (xBlank*sin(theta*PI/180.0))+(yBlank*cos(theta*PI/180.0));
+	  x = x + xOffset; //used to ensure image data copied to center of goal image
+	  y = y + yOffset; //used to ensure image data copied to center of goal image
 	  newData[y*goalStep+x*goalChannels+0]=data[i*step+j*nChannels+0];
 	  newData[y*goalStep+x*goalChannels+1]=data[i*step+j*nChannels+1];
 	  newData[y*goalStep+x*goalChannels+2]=data[i*step+j*nChannels+2];
 	}
     }
-    char output[100];
-    sprintf(output, "output%d.pgm", count);
-    cvSaveImage(output,panorama);
     count++;
   }
     return panorama;
