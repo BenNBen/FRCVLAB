@@ -15,6 +15,6 @@ done
 
 for i in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
 do
-    ./keystone $1/SQUARE$i/IMAGE0.pgm $1/SQUARE$i/IMAGE36.pgm $1/SQUARE$i/IMAGE72.pgm $1/SQUARE$i/IMAGE108.pgm $1/SQUARE$i/IMAGE144.pgm $1/SQUARE$i/IMAGE180.pgm $1/SQUARE$i/IMAGE216.pgm $1/SQUARE$i/IMAGE252.pgm $1/SQUARE$i/IMAGE288.pgm $1/SQUARE$i/IMAGE324.pgm $1_keystone/SQUARE$i/Grid$1_Square$i_Keystone.pgm
+    ./keystone $1/SQUARE$i/IMAGE0.pgm $1/SQUARE$i/IMAGE36.pgm $1/SQUARE$i/IMAGE72.pgm $1/SQUARE$i/IMAGE108.pgm $1/SQUARE$i/IMAGE144.pgm $1/SQUARE$i/IMAGE180.pgm $1/SQUARE$i/IMAGE216.pgm $1/SQUARE$i/IMAGE252.pgm $1/SQUARE$i/IMAGE288.pgm $1/SQUARE$i/IMAGE324.pgm $1_keystone/SQUARE$i/$1_SQUARE$i.pgm
 done
 
