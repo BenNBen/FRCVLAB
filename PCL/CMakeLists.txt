@@ -7,6 +7,11 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 project(filter)
 project(slice)
+project(pcl-grid_transform)
+
+find_package(PCL 1.7 REQUIRED)
+
+SET(GCC_COVERAGE_COMPILE_FLAGS "-g")
 
 find_package(PCL 1.2 REQUIRED)
 
@@ -19,6 +24,8 @@ add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 
 add_executable(filter filter.cpp)
 add_executable(slice slice.cpp)
+add_executable(grid_transform grid_transform.cpp)
 
 target_link_libraries (filter ${PCL_LIBRARIES})
 target_link_libraries( slice ${PCL_LIBRARIES})
+target_link_libraries (grid_transform ${PCL_LIBRARIES})

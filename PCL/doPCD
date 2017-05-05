@@ -1,16 +1,20 @@
-# c 2017 BBarriage
-# c 2017 Fordham University
-# Purpose is to run vertical slice program, slice, on dataDump files to produce PCD files for graphic presentation of depth data. Program then runs these through PCL viewer to show generated image.
-
-./build/slice dataDump_0_0.txt test0.pcd
-./build/slice dataDump_36_0.txt test1.pcd
-./build/slice dataDump_72_0.txt test2.pcd
-./build/slice dataDump_108_0.txt test3.pcd 
-./build/slice dataDump_144_0.txt test4.pcd
-./build/slice dataDump_-144_-36.txt test5.pcd
-./build/slice dataDump_-144_0.txt test6.pcd
-./build/slice dataDump_-108_0.txt test7.pcd
-./build/slice dataDump_-72_0.txt test8.pcd
-./build/slice dataDump_-36_0.txt test9.pcd 
-
-pcl_viewer test0.pcd test1.pcd test2.pcd test3.pcd test4.pcd test5.pcd test6.pcd test7.pcd test8.pcd test9.pcd
+#Conversion of Txt to PCD files
+#FRCV LAB FORDHAM UNIVERSITY
+#Ben Barriage
+#November 2016
+#
+echo "Attempting to convert data from txt file to pcd files"
+#
+for i in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+do
+	./rcv2pcd SQUARE$i/dataDump_144_0.txt SQUARE$i/dataDump_144_0.pcd	
+	./rcv2pcd SQUARE$i/dataDump_0_0.txt SQUARE$i/dataDump_0_0.pcd		
+	./rcv2pcd SQUARE$i/dataDump_-72_0.txt SQUARE$i/dataDump_-72_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_72_0.txt SQUARE$i/dataDump_72_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_108_0.txt SQUARE$i/dataDump_108_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_-108_0.txt SQUARE$i/dataDump_-108_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_-144_0.txt SQUARE$i/dataDump_-144_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_36_0.txt SQUARE$i/dataDump_36_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_-36_0.txt SQUARE$i/dataDump_-36_0.pcd
+	./rcv2pcd SQUARE$i/dataDump_-144_-36.txt SQUARE$i/dataDump_-144_-36.pcd
+done
