@@ -107,7 +107,7 @@ main (int argc, char** argv)
       printf("The x and y OFFSETS are %d and %d\n", accX, accY);
       accX += OFFSET;
     }
-    accY += OFFSET;
+    accY -= OFFSET;   //negative for our purposes due to coordinates becoming more negative along the yAxis
   }
   
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>());
